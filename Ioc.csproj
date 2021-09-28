@@ -5,7 +5,7 @@
     <AssemblyName>SystemDot.Ioc</AssemblyName>
     <RootNamespace>SystemDot.Ioc</RootNamespace>
 	<PackageId>SystemDotIoc</PackageId>
-	<Version>2.1.0</Version>
+	<Version>2.2.0</Version>
 	<Authors>Chris Sampson. James Goodenough</Authors>
 	<Company>SystemDot</Company>
 	<GeneratePackageOnBuild>true</GeneratePackageOnBuild>
