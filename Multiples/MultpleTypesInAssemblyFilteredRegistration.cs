@@ -18,9 +18,17 @@ namespace SystemDot.Ioc.Multiples
 
         public void ByClassAndInterface()
         {
-            foreach (Type type in typesToRegister)
+            foreach (var type in typesToRegister)
             {
                 RegisterConcreteByConcrete(type);
+                RegisterConcreteByInterfaceIfPossible(type);
+            }
+        }
+
+        public void ByInterface()
+        {
+            foreach (var type in typesToRegister)
+            {
                 RegisterConcreteByInterfaceIfPossible(type);
             }
         }
@@ -36,10 +44,32 @@ namespace SystemDot.Ioc.Multiples
                 .Invoke(container, null);
         }
 
+        public void ByClass()
+        {
+            foreach (var type in typesToRegister)
+            {
+                RegisterConcreteByConcrete(type);
+            }
+        }
+
+        public void ByClass(DependencyLifecycle lifecycle)
+        {
+            foreach (var type in typesToRegister)
+            {
+                RegisterConcreteByConcrete(type, lifecycle);
+            }
+        }
+
         void RegisterConcreteByConcrete(Type type)
         {
             GetRegisterInstanceConcreteByInterface(type, type)
                 .Invoke(container, null);
+        }
+
+        void RegisterConcreteByConcrete(Type type, DependencyLifecycle lifecycle)
+        {
+            GetRegisterInstanceWithDependencyLifecycleConcreteByInterface(type, type)
+                .Invoke(container, new object[] { lifecycle });
         }
 
         MethodInfo GetRegisterInstanceConcreteByInterface(Type plugin, Type concrete)
@@ -58,7 +88,7 @@ namespace SystemDot.Ioc.Multiples
 
         static bool MethodHasDependencyLifecycleParameter(MethodInfo method)
         {
-            return method.GetParameters().Any() 
+            return method.GetParameters().Any()
                 && method.GetParameters()[0].ParameterType == typeof(DependencyLifecycle);
         }
 
