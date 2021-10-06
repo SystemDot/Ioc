@@ -29,14 +29,14 @@ namespace SystemDot.Ioc
 
         public void RegisterInstance<TPlugin, TConcrete>()
             where TPlugin : class
-            where TConcrete : class
+            where TConcrete : class, TPlugin
         {
             RegisterInstance(typeof(TPlugin), typeof(TConcrete), DependencyLifecycle.SingletonInstance);
         }
 
         public void RegisterInstance<TPlugin, TConcrete>(DependencyLifecycle lifecycle)
             where TPlugin : class
-            where TConcrete : class
+            where TConcrete : class, TPlugin
         {
             RegisterInstance(typeof(TPlugin), typeof(TConcrete), lifecycle);
         }
