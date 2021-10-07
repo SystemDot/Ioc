@@ -5,7 +5,7 @@
     <AssemblyName>SystemDot.Ioc</AssemblyName>
     <RootNamespace>SystemDot.Ioc</RootNamespace>
 	<PackageId>SystemDotIoc</PackageId>
-	<Version>3.0.0</Version>
+	<Version>4.1.1</Version>
 	<Authors>Chris Sampson. James Goodenough</Authors>
 	<Company>SystemDot</Company>
 	<GeneratePackageOnBuild>true</GeneratePackageOnBuild>
@@ -15,6 +15,11 @@
 	<PackageTags>Ioc</PackageTags>
 	<RepositoryUrl>https://github.com/SystemDot/Ioc</RepositoryUrl>
   </PropertyGroup>
+	<ItemGroup>
+	  <Compile Remove="ServiceCollection\**" />
+	  <EmbeddedResource Remove="ServiceCollection\**" />
+	  <None Remove="ServiceCollection\**" />
+	</ItemGroup>
 	<ItemGroup>
 	  <None Include="LICENSE">
 	    <Pack>True</Pack>

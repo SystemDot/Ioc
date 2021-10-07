@@ -19,7 +19,8 @@ namespace SystemDot.Ioc
 
         object Create(Type type);
 
-        void RegisterDecorator<TDecorator, TComponent>();
+        void RegisterDecorator<TDecorator, TComponent>()
+            where TDecorator: TComponent;
 
         void RegisterOpenTypeDecorator(Type openType, Type openDecoratorType);
 

@@ -5,7 +5,7 @@ using System.Reflection;
 
 namespace SystemDot.Ioc
 {
-    internal static class TypeExtensions
+    public static class TypeExtensions
     {
         public static IEnumerable<ConstructorInfo> GetAllConstructors(this Type type)
         {

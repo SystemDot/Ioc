@@ -1,23 +1,33 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
 
 namespace SystemDot.Ioc
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
     using System.Globalization;
 
     public class IocContainer : IIocContainer
     {
-        readonly Dictionary<Type, ConcreteInstance> components = new Dictionary<Type, ConcreteInstance>();
+        private readonly Dictionary<Type, ConcreteInstance> components = new Dictionary<Type, ConcreteInstance>();
         private readonly Func<Type, string> typeDescriber;
+        private readonly Action<Type> onCreatingConcreteComponent;
 
         public IocContainer() : this(t => t.Name)
         {
         }
 
-        public IocContainer(Func<Type, string> typeDescriber)
+        public IocContainer(Func<Type, string> typeDescriber): this(typeDescriber, _ => {})
+        {
+        }
+
+        public IocContainer(Action<Type> onCreatingConcreteComponent) : this(t => t.Name, onCreatingConcreteComponent)
+        {
+        }
+
+        public IocContainer(Func<Type, string> typeDescriber, Action<Type> onCreatingConcreteComponent)
         {
             this.typeDescriber = typeDescriber;
+            this.onCreatingConcreteComponent = onCreatingConcreteComponent;
             RegisterInstance<IIocContainer>(() => this);
         }
 
@@ -108,6 +118,7 @@ namespace SystemDot.Ioc
         void CreateComponentIfConcrete(Type type)
         {
             if (!type.IsNormalConcrete()) return;
+            onCreatingConcreteComponent(type);
             components[type] = ConcreteInstance.FromType(type, this, DependencyLifecycle.SingletonInstance);
         }
 
@@ -122,6 +133,7 @@ namespace SystemDot.Ioc
         }
 
         public void RegisterDecorator<TDecorator, TComponent>()
+            where TDecorator : TComponent
         {
             components[typeof(TComponent)].DecorateWith<TDecorator>();
         }
